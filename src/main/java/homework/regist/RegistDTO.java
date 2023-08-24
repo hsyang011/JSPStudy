@@ -1,16 +1,18 @@
-package homework;
+package homework.regist;
 
-public class Member2DTO {
+public class RegistDTO {
 	
 	private String id;
 	private String pass;
 	private String name;
 	private String email;
-	private int addrNum;
+	private String mailing; // 이메일 수신여부
+	private String zipcode;
 	private String addr1;
 	private String addr2;
-	private String phone;
-	
+	private String mobile;
+	private String sms; // 문자 수신 여부
+	// getter/setter 정의
 	public String getId() {
 		return id;
 	}
@@ -35,11 +37,17 @@ public class Member2DTO {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	public int getAddrNum() {
-		return addrNum;
+	public String getMailing() {
+		return mailing;
 	}
-	public void setAddrNum(int addrNum) {
-		this.addrNum = addrNum;
+	public void setMailing(String mailing) {
+		this.mailing = mailing;
+	}
+	public String getZipcode() {
+		return zipcode;
+	}
+	public void setZipcode(String zipcode) {
+		this.zipcode = zipcode;
 	}
 	public String getAddr1() {
 		return addr1;
@@ -53,11 +61,17 @@ public class Member2DTO {
 	public void setAddr2(String addr2) {
 		this.addr2 = addr2;
 	}
-	public String getPhone() {
-		return phone;
+	public String getMobile() {
+		return mobile;
 	}
-	public void setPhone(String phone) {
-		this.phone = phone;
+	public void setMobile(String mobile) {
+		this.mobile = mobile;
+	}
+	public String getSms() {
+		return sms;
+	}
+	public void setSms(String sms) {
+		this.sms = sms;
 	}
 	
 }

@@ -1,43 +1,41 @@
-<%@page import="utils.JSFunction"%>
-<%@page import="homework.Member2DAO"%>
-<%@page import="homework.Member2DTO"%>
+<%@page import="homework.regist.RegistDAO"%>
+<%@page import="homework.regist.RegistDTO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%
+// 폼값받기
 String id = request.getParameter("id");
 String pass = request.getParameter("pass1");
 String name = request.getParameter("name");
-
-String email1 = request.getParameter("email1");
-String email2 = request.getParameter("email2");
-String email = email1+"@"+email2;
-
-int addrNum = Integer.parseInt(request.getParameter("zipcode"));
+String email = request.getParameter("email1")+"@"+request.getParameter("email2");
+String mailing = request.getParameter("mailing");
+String zipcode = request.getParameter("zipcode");
 String addr1 = request.getParameter("addr1");
 String addr2 = request.getParameter("addr2");
+String mobile = request.getParameter("mobile1")+"-"+request.getParameter("mobile2")+"-"+request.getParameter("mobile3");
+String sms = request.getParameter("sms");
 
-String phone1 = request.getParameter("mobile1");
-String phone2 = request.getParameter("mobile2");
-String phone3 = request.getParameter("mobile3");
-String phone = phone1+"-"+phone2+"-"+phone3;
-
-Member2DTO dto = new Member2DTO();
+//DTO객체에 저장하기
+RegistDTO dto = new RegistDTO();
 dto.setId(id);
 dto.setPass(pass);
 dto.setName(name);
 dto.setEmail(email);
-dto.setAddrNum(addrNum);
+dto.setMailing(mailing);
+dto.setZipcode(zipcode);
 dto.setAddr1(addr1);
 dto.setAddr2(addr2);
-dto.setPhone(phone);
+dto.setMobile(mobile);
+dto.setSms(sms);
 
-Member2DAO dao = new Member2DAO(application);
-int iResult = dao.insertMember(dto);
+// DAO객체생성 및 insert처리
+RegistDAO dao = new RegistDAO(application);
+int result = dao.registInsert(dto);
 dao.close();
 
-if (iResult == 1) {
-	JSFunction.alertBack("회원가입에 성공하였습니다.", out);
+if (result == 1) {
+	out.println("입력성공");
 } else {
-	JSFunction.alertBack("회원가입에 실패하였습니다.", out);
+	out.println("입력실패");
 }
 %>
