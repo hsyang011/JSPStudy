@@ -1,8 +1,8 @@
 package model1.board;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Vector;
 
 import common.JDBConnect;
 import jakarta.servlet.ServletContext;
@@ -52,7 +52,7 @@ public class BoardDAO extends JDBConnect {
 	public List<BoardDTO> selectList(Map<String, Object> map) {
 		/* List계열의 컬렉션을 생성한다. 이때 타입매개변수는 board테이블을 대상으로
 		하므로 BoardDTO로 설정한다. */
-		List<BoardDTO> bbs = new Vector<BoardDTO>();
+		List<BoardDTO> bbs = new ArrayList<BoardDTO>();
 		
 		/* 레코드 인출을 위한 select쿼리문 작성. 최근 게시물이 상단에 출력되어야 하므로
 		일련번호의 내림차순으로 정렬한다. */
@@ -216,6 +216,53 @@ public class BoardDAO extends JDBConnect {
 		}
 		
 		return result;
+	}
+	
+	// 게시물 목록 출력시 페이징 기능 추가
+	public List<BoardDTO> selectListPage(Map<String, Object> map) {
+		List<BoardDTO> bbs = new ArrayList<BoardDTO>();
+		
+		// 검색조건에 일치하는 게시물을 얻어온 후 각 페이지에 출력할 구간까지 서브쿼리문 작성
+		String query = " SELECT * FROM ( "
+						+ " SELECT Tb.*, ROWNUM rNum FROM ( "
+							+ " SELECT * FROM board ";
+		// 검색어가 있는 경우에만 where절을 추가한다.
+		if (map.get("searchWord") != null) {
+			query += " WHERE " + map.get("searchField")
+						+ " LIKE '%" + map.get("searchWord") + "%' ";
+		}
+		/* 게시물의 구간을 결정하기 위해 between 혹은 비교연산자를 사용할 수 있다.
+		아래의 where절은 rNum>?과 같이 변경할 수 있다. */
+		query += " 		ORDER BY num DESC "
+				+ " 	) Tb "
+				+ " ) "
+				+ " WHERE rNum BETWEEN ? AND ? ";
+		
+		try {
+			// 인파라미터가 있는 쿼리문으로 prepared객체 생성
+			psmt = con.prepareStatement(query);
+			// 인파라미터 설정
+			psmt.setString(1, map.get("start").toString());
+			psmt.setString(2, map.get("end").toString());
+			// 쿼리문 실행 및 ResultSet반환
+			rs = psmt.executeQuery();
+			while (rs.next()) {
+				BoardDTO dto = new BoardDTO();
+				dto.setNum(rs.getString("num"));
+				dto.setTitle(rs.getString("title"));
+				dto.setContent(rs.getString("content"));
+				dto.setPostdate(rs.getDate("postdate"));
+				dto.setId(rs.getString("id"));
+				dto.setVisitcount(rs.getString("visitcount"));
+				
+				bbs.add(dto);
+			}
+		} catch (Exception e) {
+			System.out.println("게시물 조회 중 예외 발생");
+			e.printStackTrace();
+		}
+		
+		return bbs;
 	}
 	
 }
