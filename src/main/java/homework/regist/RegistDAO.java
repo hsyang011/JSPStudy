@@ -36,8 +36,8 @@ public class RegistDAO extends JDBConnect {
 		return result;
 	}
 	
-	// 아이디가 존재하는지 검사
-	public boolean isExist(String id) {
+	// 아이디가 중복확인을 위한 메소드 정의
+	public boolean idOverlap(String id) {
 		// 동적 쿼리문 작성
 		String query = " SELECT id FROM regist_member WHERE id=? ";
 		try {
