@@ -140,15 +140,14 @@ public class BoardDAO extends JDBConnect {
 			while문이 아닌 if문으로 처리한다. next()메소드는 ResultSet으로 반환된
 			게시물을 확인해서 존재하면 true를 반환해준다. */
 			if (rs.next()) {
-				dto.setNum(rs.getString(1));
-				dto.setTitle(rs.getString(2));
+				dto.setId(rs.getString("id"));
+				dto.setNum(rs.getString("num"));
+				dto.setTitle(rs.getString("title"));
 				/* 각 컬럼의 값을 추출할 때 1부터 시작하는 인덱스와 컬럼명 둘 다 사용할
 				수 있다. 날짜인 경우에는 getDate()메소드로 추출할 수 있다. */
 				dto.setContent(rs.getString("content"));
 				dto.setPostdate(rs.getDate("postdate"));
-				dto.setId(rs.getString("id"));
-				dto.setVisitcount(rs.getString(6));
-				dto.setName(rs.getString("name"));
+				dto.setVisitcount(rs.getString("visitcount"));
 			}
 		} catch (Exception e) {
 			

@@ -10,6 +10,7 @@ public class BoardDTO {
 	private String visitcount;
 	// member테이블과의 join을 통해 회원 이름을 출력해야 할 때를 위해 멤버변수를 추가한다.
 	private String name;
+	private String email;
 	
 	// 특별한 이유가 없다면 생성자는 선언하지 않는다.
 	
@@ -55,6 +56,12 @@ public class BoardDTO {
 	}
 	public void setName(String name) {
 		this.name = name;
+	}
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
 	}
 	
 }
